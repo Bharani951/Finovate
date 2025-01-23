@@ -1,1 +1,1 @@
-# Instant-Budget-Coach
+# Finovate
