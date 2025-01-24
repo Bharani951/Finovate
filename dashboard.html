@@ -18,7 +18,22 @@
             overflow: hidden;
         }
 
+        .header {
+            width: 100%;
+            background-color: #e1a730; /* Theme-matching color */
+            color: #fff;
+            padding: 15px 0;
+            text-align: center;
+            font-size: 1.5rem;
+            font-weight: bold;
+            position: fixed;
+            top: 0;
+            left: 0;
+            z-index: 1000;
+        }
+
         .container {
+            margin-top: 70px; /* Added space for the fixed header */
             width: 90%;
             max-width: 600px;
             text-align: center;
@@ -139,6 +154,9 @@
     <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
 </head>
 <body>
+    <!-- Header Row -->
+    <div class="header">Home Page</div>
+
     <div class="container">
         <h1 class="title">₹50,000</h1>
 
