@@ -151,7 +151,35 @@
                     {
                         label: "Spending",
                         data: [],
-                        backgroundColor: ["#e1a730", "#f39c12", "#d35400", "#c0392b", "#27ae60"],
+                        backgroundColor: "#f39c12", // Yellow
+                        borderColor: "#000000",
+                        borderWidth: 1
+                    },
+                    {
+                        label: "Savings",
+                        data: [],
+                        backgroundColor: "#27ae60", // Green
+                        borderColor: "#000000",
+                        borderWidth: 1
+                    },
+                    {
+                        label: "Expenses",
+                        data: [],
+                        backgroundColor: "#c0392b", // Red
+                        borderColor: "#000000",
+                        borderWidth: 1
+                    },
+                    {
+                        label: "Investments",
+                        data: [],
+                        backgroundColor: "#3498db", // Blue
+                        borderColor: "#000000",
+                        borderWidth: 1
+                    },
+                    {
+                        label: "Miscellaneous",
+                        data: [],
+                        backgroundColor: "#9b59b6", // Purple
                         borderColor: "#000000",
                         borderWidth: 1
                     }
@@ -182,6 +210,10 @@
             // Update Chart
             spendingChart.data.labels = filteredData.labels;
             spendingChart.data.datasets[0].data = filteredData.spending;
+            spendingChart.data.datasets[1].data = filteredData.spending.map(value => value * 0.2); // Savings
+            spendingChart.data.datasets[2].data = filteredData.spending.map(value => value * 0.5); // Expenses
+            spendingChart.data.datasets[3].data = filteredData.spending.map(value => value * 0.1); // Investments
+            spendingChart.data.datasets[4].data = filteredData.spending.map(value => value * 0.2); // Miscellaneous
             spendingChart.update();
 
             // Update Stats
