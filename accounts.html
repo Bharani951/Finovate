@@ -10,7 +10,8 @@
         font-family: Arial, sans-serif;
         margin: 0;
         padding: 0;
-        background-color: #f4f4f4;
+        background-color: #ffffff; /* Theme background color */
+        color: #000000; /* Theme text color */
       }
 
       .container {
@@ -27,16 +28,20 @@
       }
 
       header h1 {
-        color: #333;
+        color: #000000; /* Theme text color */
       }
 
       #addAccountBtn {
         padding: 10px 20px;
-        background-color: #007bff;
+        background-color: #e1a730; /* Theme accent color */
         color: white;
         border: none;
         border-radius: 5px;
         cursor: pointer;
+      }
+
+      #addAccountBtn:hover {
+        background-color: #d19a2c;
       }
 
       .accounts-grid {
@@ -46,7 +51,7 @@
       }
 
       .account-card {
-        background-color: #fff;
+        background-color: #ffffff; /* Theme background color */
         padding: 20px;
         border-radius: 10px;
         box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
@@ -54,30 +59,36 @@
       }
 
       .account-card h2 {
-        color: #007bff;
+        color: #e1a730; /* Theme accent color */
       }
 
       .account-card p {
         margin: 10px 0;
         font-size: 16px;
-        color: #555;
+        color: #000000; /* Theme text color */
       }
 
       .view-details {
         padding: 8px 15px;
-        background-color: #007bff;
+        background-color: #e1a730; /* Theme accent color */
         color: white;
         border: none;
         border-radius: 5px;
         cursor: pointer;
       }
 
+      .view-details:hover {
+        background-color: #d19a2c;
+      }
+
       .chart-container {
         margin-top: 40px;
-        background-color: white;
+        background-color: #ffffff; /* Theme background color */
         padding: 20px;
         border-radius: 10px;
         box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
+        max-width: 400px; /* Shrink the size of the pie chart */
+        margin: 40px auto; /* Center the chart */
       }
 
       canvas {
@@ -171,7 +182,7 @@
           datasets: [
             {
               data: accounts.map((account) => account.balance),
-              backgroundColor: ["#007bff", "#ff6384", "#36a2eb", "#ffcd56"],
+              backgroundColor: ["#e1a730", "#ff6384", "#36a2eb", "#ffcd56"],
             },
           ],
         },

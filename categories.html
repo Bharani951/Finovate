@@ -9,8 +9,8 @@
         body {
             margin: 0;
             font-family: Arial, sans-serif;
-            background-color: #f4f4f4;
-            color: #333;
+            background-color: #ffffff; /* Theme background color */
+            color: #000000; /* Theme text color */
         }
 
         .container {
@@ -18,14 +18,14 @@
             max-width: 1200px;
             margin: 20px auto;
             padding: 20px;
-            background-color: #fff;
+            background-color: #ffffff; /* Theme background color */
             border-radius: 10px;
             box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
         }
 
         .title {
             font-size: 2rem;
-            color: #2ecc71;
+            color: #e1a730; /* Theme accent color */
             text-align: center;
             margin-bottom: 20px;
         }
@@ -38,7 +38,7 @@
         }
 
         .category {
-            background: #fff;
+            background: #ffffff; /* Theme background color */
             padding: 15px;
             border-radius: 10px;
             box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
@@ -50,7 +50,7 @@
         .category h3 {
             margin: 0;
             font-size: 1.2rem;
-            color: #333;
+            color: #000000; /* Theme text color */
         }
 
         .category p {
@@ -63,7 +63,7 @@
             top: 10px;
             right: 10px;
             background: #e74c3c;
-            color: #fff;
+            color: #ffffff; /* White text */
             border: none;
             border-radius: 5px;
             padding: 5px 10px;
@@ -81,8 +81,8 @@
         }
 
         .add-category button {
-            background: #2ecc71;
-            color: #fff;
+            background: #e1a730; /* Theme accent color */
+            color: #ffffff; /* White text */
             border: none;
             padding: 10px 20px;
             border-radius: 5px;
@@ -91,11 +91,30 @@
         }
 
         .add-category button:hover {
-            background: #27ae60;
+            background: #d19a2c;
+        }
+        .edit-category {
+            display: flex;
+            justify-content: center;
+            margin-bottom: 30px;
+        }
+
+        .edit-category button {
+            background: #e1a730; /* Theme accent color */
+            color: #ffffff; /* White text */
+            border: none;
+            padding: 10px 20px;
+            border-radius: 5px;
+            font-size: 1rem;
+            cursor: pointer;
+        }
+
+        .edit-category button:hover {
+            background: #d19a2c;
         }
 
         .pie-chart {
-            max-width: 600px;
+            max-width: 250px; /* Shrink the size of the pie chart */
             margin: 0 auto 30px;
         }
 
@@ -137,7 +156,11 @@
         </div>
 
         <div class="add-category">
-            <button onclick="addCategory()">+ Add Category</button>
+            <button onclick="addCategory()"> Add Category</button>
+        </div>
+
+        <div class="edit-category">
+            <button onclick="editCategory()">Edit Category</button>
         </div>
 
         <script>
@@ -149,7 +172,7 @@
                     labels: ['Shopping', 'Groceries', 'Entertainment', 'Loan', 'EMI'],
                     datasets: [{
                         data: [3000, 5000, 2000, 15000, 10000],
-                        backgroundColor: ['#2ecc71', '#3498db', '#9b59b6', '#e74c3c', '#f1c40f']
+                        backgroundColor: ['#e1a730', '#3498db', '#9b59b6', '#e74c3c', '#f1c40f']
                     }]
                 },
                 options: {
@@ -166,7 +189,8 @@
             function addCategory() {
                 window.location.href = "add-category.html"; // Navigate to Code 2 (Add Expense Category page)
             }
+            function editCategory() {
+                window.location.href = "categoryedidel.html"; // Navigate to Code 2 (Add Expense Category page)
+            }
         </script>
     </div>
-</body>
-</html>

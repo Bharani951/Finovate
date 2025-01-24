@@ -8,13 +8,14 @@
         body {
             margin: 0;
             font-family: Arial, sans-serif;
-            background-color: #f4f4f4;
-            color: #333;
+            background-color: #ffffff; /* Theme background color */
+            color: #000000; /* Theme text color */
             display: flex;
             flex-direction: column;
             align-items: center;
             justify-content: center;
             min-height: 100vh;
+            overflow: hidden;
         }
 
         .container {
@@ -22,61 +23,75 @@
             max-width: 600px;
             text-align: center;
             background-color: #fff;
-            border-radius: 10px;
-            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+            border-radius: 15px;
+            box-shadow: 0 8px 20px rgba(0, 0, 0, 0.1);
             padding: 20px;
+            position: relative;
+            animation: fadeIn 1.2s ease-in-out;
+        }
+
+        @keyframes fadeIn {
+            from { opacity: 0; transform: translateY(20px); }
+            to { opacity: 1; transform: translateY(0); }
         }
 
         .title {
-            font-size: 2rem;
-            color: #2ecc71;
+            font-size: 2.5rem;
+            color: #e1a730;
             margin-bottom: 20px;
-        }
-
-        .speed-meter {
-            position: relative;
-            width: 150px;
-            height: 150px;
-            margin: 0 auto;
-            background: conic-gradient(#2ecc71 75%, #e0e0e0 0%);
-            border-radius: 50%;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
-        }
-
-        .speed-meter span {
-            font-size: 1.2rem;
             font-weight: bold;
-            color: #333;
+            animation: scaleUp 1.5s ease-in-out;
+        }
+
+        @keyframes scaleUp {
+            from { transform: scale(0.8); }
+            to { transform: scale(1); }
+        }
+
+        .pie-chart {
+            width: 200px;
+            height: 200px;
+            margin: 20px auto;
+            position: relative;
+        }
+
+        .pie-chart canvas {
+            width: 100%;
+            height: 100%;
         }
 
         .summary {
             display: flex;
             justify-content: space-between;
             margin: 20px 0;
+            gap: 10px;
         }
 
         .summary .block {
-            background: #fff;
+            background: linear-gradient(145deg, #fdf1d6, #e1a730);
             padding: 15px;
             border-radius: 10px;
-            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
             flex: 1;
-            margin: 0 10px;
             text-align: center;
+            transition: transform 0.3s ease, box-shadow 0.3s ease;
+        }
+
+        .summary .block:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 8px 15px rgba(0, 0, 0, 0.3);
         }
 
         .summary .block h3 {
             margin: 0;
-            color: #333;
+            color: #000000;
         }
 
         .summary .block p {
             margin: 5px 0 0;
-            font-size: 1rem;
-            color: #2ecc71;
+            font-size: 1.2rem;
+            color: #e1a730;
+            font-weight: bold;
         }
 
         .navigation {
@@ -86,89 +101,63 @@
         }
 
         .navigation button {
-            background: #2ecc71;
+            background: #e1a730;
             color: #fff;
             border: none;
             padding: 10px 20px;
             border-radius: 5px;
             font-size: 1rem;
             cursor: pointer;
-            transition: background 0.3s;
+            transition: background 0.3s, transform 0.2s;
         }
 
         .navigation button:hover {
-            background: #27ae60;
+            background: #c29224;
+            transform: scale(1.05);
         }
 
         .navigation button:active {
-            background: #1e8449;
-        }
-
-        .back-button {
-            background: #e74c3c;
-            color: #fff;
-            border: none;
-            padding: 10px 20px;
-            border-radius: 5px;
-            font-size: 1rem;
-            cursor: pointer;
-            transition: background 0.3s;
-            margin-top: 20px;
-        }
-
-        .back-button:hover {
-            background: #c0392b;
-        }
-
-        .back-button:active {
-            background: #a93226;
+            background: #a6781c;
         }
 
         @media (max-width: 768px) {
             .summary {
                 flex-direction: column;
-                gap: 10px;
-            }
-
-            .summary .block {
-                margin: 10px 0;
+                gap: 15px;
             }
 
             .navigation {
                 flex-direction: column;
-                gap: 10px;
+                gap: 15px;
             }
 
             .navigation button {
                 width: 100%;
             }
-
-            .back-button {
-                width: 100%;
-            }
         }
     </style>
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
 </head>
 <body>
     <div class="container">
-        <h1 class="title">Dashboard</h1>
+        <h1 class="title">₹50,000</h1>
 
-        <div class="speed-meter">
-            <span>₹14,206</span>
+        <div class="pie-chart">
+            <canvas id="pieChart"></canvas>
         </div>
 
         <div class="summary">
             <div class="block">
                 <h3>Income</h3>
-                <p>₹30,000</p>
+                <p>₹70,000</p>
             </div>
             <div class="block">
                 <h3>Balance</h3>
-                <p>₹15,794</p>
+                <p>₹50,000</p>
             </div>
             <div class="block">
                 <h3>Spent Today</h3>
-                <p>₹509</p>
+                <p>₹3,000</p>
             </div>
         </div>
 
@@ -180,9 +169,50 @@
     </div>
 
     <script>
+        // Function to navigate to different pages
         function navigateTo(page) {
-            window.location.href = page; // Redirects to the specified page
+            window.location.href = page;
         }
+
+        // Create a pie chart
+        const ctx = document.getElementById('pieChart').getContext('2d');
+        const pieChart = new Chart(ctx, {
+            type: 'doughnut',
+            data: {
+                labels: ['Income', 'Expenses', 'Savings'],
+                datasets: [
+                    {
+                        data: [70, 20, 10], // Percentages
+                        backgroundColor: ['#e1a730', '#c0392b', '#2ecc71'],
+                        hoverBackgroundColor: ['#d1a020', '#a83226', '#27ae60'],
+                    },
+                ],
+            },
+            options: {
+                responsive: true,
+                maintainAspectRatio: false,
+                plugins: {
+                    legend: {
+                        position: 'bottom',
+                        labels: {
+                            color: '#000000',
+                            font: {
+                                size: 14,
+                            },
+                        },
+                    },
+                    tooltip: {
+                        callbacks: {
+                            label: function (tooltipItem) {
+                                const label = tooltipItem.label || '';
+                                const value = tooltipItem.raw || 0;
+                                return `${label}: ${value}%`;
+                            },
+                        },
+                    },
+                },
+            },
+        });
     </script>
 </body>
 </html>
