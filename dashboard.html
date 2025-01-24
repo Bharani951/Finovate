@@ -111,7 +111,9 @@
 
         .navigation {
             display: flex;
-            justify-content: space-around;
+            flex-direction: column;
+            align-items: center;
+            gap: 15px;
             margin: 20px 0;
         }
 
@@ -137,11 +139,6 @@
 
         @media (max-width: 768px) {
             .summary {
-                flex-direction: column;
-                gap: 15px;
-            }
-
-            .navigation {
                 flex-direction: column;
                 gap: 15px;
             }
@@ -183,6 +180,8 @@
             <button onclick="navigateTo('insights.html')">Insights</button>
             <button onclick="navigateTo('categories.html')">Categories</button>
             <button onclick="navigateTo('accounts.html')">Accounts</button>
+            <!-- New Add to Transaction Button -->
+            <button onclick="navigateTo('add-transaction.html')">Add to Transaction</button>
         </div>
     </div>
 
