@@ -1,0 +1,65 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Login - Finovate</title>
+    <link rel="stylesheet" href="styles.css" />
+    <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+    <script type="module">
+      // Import Firebase modules
+      import { initializeApp } from "https://www.gstatic.com/firebasejs/9.6.1/firebase-app.js";
+      import { getAuth, signInWithEmailAndPassword } from "https://www.gstatic.com/firebasejs/9.6.1/firebase-auth.js";
+      import { getFirestore } from "https://www.gstatic.com/firebasejs/9.6.1/firebase-firestore.js";
+
+      // Firebase configuration
+      const firebaseConfig = {
+        apiKey: "AIzaSyAYHNqpDhmP6gV7kJkhd99iIRVg0BBXIQQ",
+        authDomain: "finovate-bd452.firebaseapp.com",
+        projectId: "finovate-bd452",
+        storageBucket: "finovate-bd452.appspot.com", 
+        messagingSenderId: "212514953038",
+        appId: "1:212514953038:web:3cbac3bddc25854e55f01f",
+      };
+
+      // Initialize Firebase
+      const app = initializeApp(firebaseConfig);
+      const auth = getAuth(app);
+      const db = getFirestore(app);
+
+      // Login functionality
+      window.addEventListener("DOMContentLoaded", () => {
+        const loginForm = document.getElementById("login-form");
+        loginForm.addEventListener("submit", (e) => {
+          e.preventDefault();
+          const email = document.getElementById("login-email").value;
+          const password = document.getElementById("login-password").value;
+
+          signInWithEmailAndPassword(auth, email, password)
+            .then(() => {
+              Swal.fire("Success", "Logged in successfully!", "success");
+              window.location.href = "dashboard.html";
+            })
+            .catch((error) => Swal.fire("Error", error.message, "error"));
+        });
+      });
+    </script>
+  </head>
+  <body>
+    <!-- Login Page -->
+    <div id="login-page" class="page">
+      <img src="logo.png" alt="Finovate Logo" class="logo" />
+      <h1 class="title">Login</h1>
+      <form id="login-form">
+        <input type="email" id="login-email" placeholder="Email" required />
+        <input
+          type="password"
+          id="login-password"
+          placeholder="Password"
+          required
+        />
+        <button type="submit">Login</button>
+      </form>
+    </div>
+  </body>
+</html>

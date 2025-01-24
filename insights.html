@@ -1,0 +1,178 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Insights - Expense Tracker</title>
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+    <style>
+        body {
+            margin: 0;
+            font-family: Arial, sans-serif;
+            background-color: #f4f4f4;
+            color: #333;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            padding: 20px;
+        }
+
+        .container {
+            width: 100%;
+            max-width: 1200px;
+            background: #fff;
+            border-radius: 10px;
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+            padding: 20px;
+            margin-bottom: 20px;
+        }
+
+        .header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 20px;
+        }
+
+        h1 {
+            font-size: 2rem;
+            color: #2ecc71;
+        }
+
+        .filter {
+            position: relative;
+        }
+
+        .filter select {
+            padding: 10px;
+            font-size: 1rem;
+            border: 1px solid #ccc;
+            border-radius: 5px;
+            background: #fff;
+        }
+
+        .chart-container {
+            width: 100%;
+            max-width: 800px;
+            margin: 0 auto;
+        }
+
+        .stats-section {
+            text-align: left;
+            margin-top: 20px;
+            background: #f9f9f9;
+            padding: 20px;
+            border-radius: 10px;
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+        }
+
+        .stats-section p {
+            margin: 10px 0;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <div class="header">
+            <h1>Insights</h1>
+            <div class="filter">
+                <select id="timeFilter" onchange="applyFilter()">
+                    <option value="day">Past Day</option>
+                    <option value="week">Entire Week</option>
+                    <option value="month">Past Month</option>
+                    <option value="year">Past Year</option>
+                </select>
+            </div>
+        </div>
+        <div class="chart-container">
+            <canvas id="spendingChart"></canvas>
+        </div>
+    </div>
+
+    <div class="container stats-section">
+        <h2>Stats Summary</h2>
+        <p><strong>Number of Transactions:</strong> <span id="transactionCount">0</span></p>
+        <p><strong>Average Spending:</strong> ₹<span id="averageSpending">0</span></p>
+        <p><strong>Average Income:</strong> ₹<span id="averageIncome">0</span></p>
+    </div>
+
+    <script>
+        // Standard Input Data for Analysis
+        const data = {
+            day: {
+                spending: [100, 200, 150, 300, 250],
+                transactions: 5,
+                avgSpending: 200,
+                avgIncome: 1000,
+            },
+            week: {
+                spending: [700, 500, 800, 600, 900],
+                transactions: 35,
+                avgSpending: 750,
+                avgIncome: 5000,
+            },
+            month: {
+                spending: [3000, 3500, 4000, 3200, 3600],
+                transactions: 120,
+                avgSpending: 3600,
+                avgIncome: 20000,
+            },
+            year: {
+                spending: [12000, 15000, 11000, 14000, 13000],
+                transactions: 1450,
+                avgSpending: 13000,
+                avgIncome: 300000,
+            }
+        };
+
+        // Initialize Chart.js
+        const ctx = document.getElementById('spendingChart').getContext('2d');
+        let spendingChart = new Chart(ctx, {
+            type: 'bar',
+            data: {
+                labels: ["Category 1", "Category 2", "Category 3", "Category 4", "Category 5"],
+                datasets: [{
+                    label: "Spending",
+                    data: [0, 0, 0, 0, 0],
+                    backgroundColor: "rgba(46, 204, 113, 0.8)",
+                    borderColor: "#2ecc71",
+                    borderWidth: 1
+                }]
+            },
+            options: {
+                responsive: true,
+                scales: {
+                    y: {
+                        beginAtZero: true
+                    }
+                },
+                plugins: {
+                    legend: {
+                        position: 'top',
+                    }
+                }
+            }
+        });
+
+        // Function to Update Chart and Stats Based on Filter
+        function applyFilter() {
+            const filter = document.getElementById('timeFilter').value;
+
+            // Fetch Data from Standard Input
+            const filteredData = data[filter];
+
+            // Update Chart
+            spendingChart.data.datasets[0].data = filteredData.spending;
+            spendingChart.update();
+
+            // Update Stats
+            document.getElementById('transactionCount').textContent = filteredData.transactions;
+            document.getElementById('averageSpending').textContent = filteredData.avgSpending.toLocaleString();
+            document.getElementById('averageIncome').textContent = filteredData.avgIncome.toLocaleString();
+        }
+
+        // Initial Load
+        applyFilter();
+    </script>
+</body>
+</html>

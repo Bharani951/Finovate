@@ -1,0 +1,202 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Accounts Dashboard</title>
+    <style>
+      /* CSS: Styling Section */
+      body {
+        font-family: Arial, sans-serif;
+        margin: 0;
+        padding: 0;
+        background-color: #f4f4f4;
+      }
+
+      .container {
+        max-width: 1200px;
+        margin: auto;
+        padding: 20px;
+      }
+
+      header {
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        margin-bottom: 20px;
+      }
+
+      header h1 {
+        color: #333;
+      }
+
+      #addAccountBtn {
+        padding: 10px 20px;
+        background-color: #007bff;
+        color: white;
+        border: none;
+        border-radius: 5px;
+        cursor: pointer;
+      }
+
+      .accounts-grid {
+        display: grid;
+        grid-template-columns: repeat(auto-fill, minmax(250px, 1fr));
+        gap: 20px;
+      }
+
+      .account-card {
+        background-color: #fff;
+        padding: 20px;
+        border-radius: 10px;
+        box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
+        text-align: center;
+      }
+
+      .account-card h2 {
+        color: #007bff;
+      }
+
+      .account-card p {
+        margin: 10px 0;
+        font-size: 16px;
+        color: #555;
+      }
+
+      .view-details {
+        padding: 8px 15px;
+        background-color: #007bff;
+        color: white;
+        border: none;
+        border-radius: 5px;
+        cursor: pointer;
+      }
+
+      .chart-container {
+        margin-top: 40px;
+        background-color: white;
+        padding: 20px;
+        border-radius: 10px;
+        box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
+      }
+
+      canvas {
+        max-width: 100%;
+        height: auto;
+      }
+    </style>
+  </head>
+  <body>
+    <div class="container">
+      <header>
+        <h1>Accounts Dashboard</h1>
+        <button id="addAccountBtn">+ Add Account</button>
+      </header>
+
+      <!-- Default Account Cards -->
+      <div class="accounts-grid" id="accountsGrid">
+        <!-- Example Account -->
+        <div class="account-card" data-account-type="Bank">
+          <h2>Bank Account</h2>
+          <p>Balance: ₹<span id="bankBalance">50,000</span></p>
+          <button class="view-details" onclick="viewDetails('Bank')">
+            View Details
+          </button>
+        </div>
+        <div class="account-card" data-account-type="Credit">
+          <h2>Credit Card</h2>
+          <p>Balance: ₹<span id="creditBalance">10,000</span></p>
+          <button class="view-details" onclick="viewDetails('Credit')">
+            View Details
+          </button>
+        </div>
+      </div>
+
+      <!-- Pie Chart for Spending Analysis -->
+      <div class="chart-container">
+        <canvas id="spendingChart"></canvas>
+      </div>
+    </div>
+
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+    <script>
+      // JavaScript Section
+
+      // Initial Account Data
+      let accounts = [
+        { type: "Bank Account", balance: 50000 },
+        { type: "Credit Card", balance: 10000 },
+        { type: "UPI", balance: 2000 },
+        { type: "Cash", balance: 5000 },
+      ];
+
+      // Render Accounts
+      function renderAccounts() {
+        const accountsGrid = document.getElementById("accountsGrid");
+        accountsGrid.innerHTML = ""; // Clear existing accounts
+
+        accounts.forEach((account) => {
+          accountsGrid.innerHTML += `
+                    <div class="account-card">
+                        <h2>${account.type}</h2>
+                        <p>Balance: ₹${account.balance}</p>
+                        <button class="view-details" onclick="viewDetails('${account.type}')">View Details</button>
+                    </div>
+                `;
+        });
+      }
+
+      // Add Account
+      document.getElementById("addAccountBtn").addEventListener("click", () => {
+        const accountType = prompt("Enter Account Type:");
+        const balance = prompt("Enter Initial Balance:");
+        if (accountType && balance) {
+          accounts.push({ type: accountType, balance: parseInt(balance) });
+          renderAccounts();
+          updateChart();
+        }
+      });
+
+      // View Details (Mock Functionality)
+      function viewDetails(accountType) {
+        alert(`Viewing details for ${accountType}`);
+      }
+
+      // Spending Analysis Chart
+      const ctx = document.getElementById("spendingChart").getContext("2d");
+      let chart = new Chart(ctx, {
+        type: "pie",
+        data: {
+          labels: accounts.map((account) => account.type),
+          datasets: [
+            {
+              data: accounts.map((account) => account.balance),
+              backgroundColor: ["#007bff", "#ff6384", "#36a2eb", "#ffcd56"],
+            },
+          ],
+        },
+        options: {
+          responsive: true,
+          plugins: {
+            legend: {
+              position: "top",
+            },
+          },
+        },
+      });
+
+      // Update Chart
+      function updateChart() {
+        chart.data.labels = accounts.map((account) => account.type);
+        chart.data.datasets[0].data = accounts.map(
+          (account) => account.balance
+        );
+        chart.update();
+      }
+
+      // Initial Render
+      renderAccounts();
+      updateChart();
+    </script>
+  </body>
+</html>
