@@ -1,0 +1,229 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Insights - Expense Tracker</title>
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+    <style>
+        body {
+            margin: 0;
+            font-family: Arial, sans-serif;
+            background-color: #ffffff; /* Theme background color */
+            color: #000000; /* Theme text color */
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            padding: 20px;
+        }
+
+        .container {
+            width: 100%;
+            max-width: 1200px;
+            background: #fff;
+            border-radius: 15px;
+            box-shadow: 0 8px 20px rgba(0, 0, 0, 0.1);
+            padding: 20px;
+            margin-bottom: 20px;
+            animation: fadeIn 1s ease-in-out;
+        }
+
+        @keyframes fadeIn {
+            from {
+                opacity: 0;
+                transform: translateY(20px);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+
+        .header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 20px;
+        }
+
+        h1 {
+            font-size: 2.5rem;
+            color: #e1a730; /* Theme accent color */
+        }
+
+        .filter {
+            position: relative;
+        }
+
+        .filter select {
+            padding: 10px;
+            font-size: 1rem;
+            border: 1px solid #ccc;
+            border-radius: 5px;
+            background: #f9f9f9;
+        }
+
+        .chart-container {
+            width: 100%;
+            max-width: 800px;
+            margin: 0 auto;
+        }
+
+        .stats-section {
+            text-align: left;
+            margin-top: 20px;
+            background: #f9f9f9;
+            padding: 20px;
+            border-radius: 15px;
+            box-shadow: 0 8px 20px rgba(0, 0, 0, 0.1);
+        }
+
+        .stats-section p {
+            margin: 10px 0;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <div class="header">
+            <h1>Insights</h1>
+            <div class="filter">
+                <select id="timeFilter" onchange="applyFilter()">
+                    <option value="day">Past Day</option>
+                    <option value="week">Entire Week</option>
+                    <option value="month">Past Month</option>
+                    <option value="year">Past Year</option>
+                </select>
+            </div>
+        </div>
+        <div class="chart-container">
+            <canvas id="spendingChart"></canvas>
+        </div>
+    </div>
+
+    <div class="container stats-section">
+        <h2>Stats Summary</h2>
+        <p><strong>Number of Transactions:</strong> <span id="transactionCount">0</span></p>
+        <p><strong>Average Spending:</strong> ₹<span id="averageSpending">0</span></p>
+        <p><strong>Average Income:</strong> ₹<span id="averageIncome">0</span></p>
+    </div>
+
+    <script>
+        // Standard Input Data for Analysis
+        const data = {
+            day: {
+                spending: [100, 200, 150, 300, 250],
+                labels: ["Morning", "Afternoon", "Evening", "Night", "Late Night"],
+                transactions: 5,
+                avgSpending: 200,
+                avgIncome: 1000,
+            },
+            week: {
+                spending: [700, 500, 800, 600, 900],
+                labels: ["1st Week", "2nd Week", "3rd Week", "4th Week", "5th Week"],
+                transactions: 35,
+                avgSpending: 750,
+                avgIncome: 5000,
+            },
+            month: {
+                spending: [3000, 3500, 4000, 3200, 3600],
+                labels: ["January", "February", "March", "April", "May"],
+                transactions: 120,
+                avgSpending: 3600,
+                avgIncome: 20000,
+            },
+            year: {
+                spending: [12000, 15000, 11000, 14000, 13000],
+                labels: ["2020", "2021", "2022", "2023", "2024"],
+                transactions: 1450,
+                avgSpending: 13000,
+                avgIncome: 300000,
+            }
+        };
+
+        // Initialize Chart.js
+        const ctx = document.getElementById('spendingChart').getContext('2d');
+        let spendingChart = new Chart(ctx, {
+            type: 'bar',
+            data: {
+                labels: [],
+                datasets: [
+                    {
+                        label: "Spending",
+                        data: [],
+                        backgroundColor: "#f39c12", // Yellow
+                        borderColor: "#000000",
+                        borderWidth: 1
+                    },
+                    {
+                        label: "Savings",
+                        data: [],
+                        backgroundColor: "#27ae60", // Green
+                        borderColor: "#000000",
+                        borderWidth: 1
+                    },
+                    {
+                        label: "Expenses",
+                        data: [],
+                        backgroundColor: "#c0392b", // Red
+                        borderColor: "#000000",
+                        borderWidth: 1
+                    },
+                    {
+                        label: "Investments",
+                        data: [],
+                        backgroundColor: "#3498db", // Blue
+                        borderColor: "#000000",
+                        borderWidth: 1
+                    },
+                    {
+                        label: "Miscellaneous",
+                        data: [],
+                        backgroundColor: "#9b59b6", // Purple
+                        borderColor: "#000000",
+                        borderWidth: 1
+                    }
+                ]
+            },
+            options: {
+                responsive: true,
+                plugins: {
+                    legend: {
+                        position: 'top',
+                    },
+                },
+                scales: {
+                    y: {
+                        beginAtZero: true
+                    }
+                }
+            }
+        });
+
+        // Function to Update Chart and Stats Based on Filter
+        function applyFilter() {
+            const filter = document.getElementById('timeFilter').value;
+
+            // Fetch Data from Standard Input
+            const filteredData = data[filter];
+
+            // Update Chart
+            spendingChart.data.labels = filteredData.labels;
+            spendingChart.data.datasets[0].data = filteredData.spending;
+            spendingChart.data.datasets[1].data = filteredData.spending.map(value => value * 0.2); // Savings
+            spendingChart.data.datasets[2].data = filteredData.spending.map(value => value * 0.5); // Expenses
+            spendingChart.data.datasets[3].data = filteredData.spending.map(value => value * 0.1); // Investments
+            spendingChart.data.datasets[4].data = filteredData.spending.map(value => value * 0.2); // Miscellaneous
+            spendingChart.update();
+
+            // Update Stats
+            document.getElementById('transactionCount').textContent = filteredData.transactions;
+            document.getElementById('averageSpending').textContent = filteredData.avgSpending.toLocaleString();
+            document.getElementById('averageIncome').textContent = filteredData.avgIncome.toLocaleString();
+        }
+
+        // Initial Load
+        applyFilter();
+    </script>
+</body>
+</html>

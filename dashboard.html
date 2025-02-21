@@ -1,0 +1,235 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Dashboard - Finovate</title>
+    <style>
+        body {
+            margin: 0;
+            font-family: Arial, sans-serif;
+            background-color: #ffffff; /* Theme background color */
+            color: #000000; /* Theme text color */
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            min-height: 100vh;
+            overflow: hidden;
+        }
+
+        .header {
+            width: 100%;
+            background-color: #e1a730; /* Theme-matching color */
+            color: #fff;
+            padding: 15px 0;
+            text-align: center;
+            font-size: 1.5rem;
+            font-weight: bold;
+            position: fixed;
+            top: 0;
+            left: 0;
+            z-index: 1000;
+        }
+
+        .container {
+            margin-top: 70px; /* Added space for the fixed header */
+            width: 90%;
+            max-width: 600px;
+            text-align: center;
+            background-color: #fff;
+            border-radius: 15px;
+            box-shadow: 0 8px 20px rgba(0, 0, 0, 0.1);
+            padding: 20px;
+            position: relative;
+            animation: fadeIn 1.2s ease-in-out;
+        }
+
+        @keyframes fadeIn {
+            from { opacity: 0; transform: translateY(20px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+
+        .title {
+            font-size: 2.5rem;
+            color: #e1a730;
+            margin-bottom: 20px;
+            font-weight: bold;
+            animation: scaleUp 1.5s ease-in-out;
+        }
+
+        @keyframes scaleUp {
+            from { transform: scale(0.8); }
+            to { transform: scale(1); }
+        }
+
+        .pie-chart {
+            width: 200px;
+            height: 200px;
+            margin: 20px auto;
+            position: relative;
+        }
+
+        .pie-chart canvas {
+            width: 100%;
+            height: 100%;
+        }
+
+        .summary {
+            display: flex;
+            justify-content: space-between;
+            margin: 20px 0;
+            gap: 10px;
+        }
+
+        .summary .block {
+            background: linear-gradient(145deg, #fdf1d6, #e1a730);
+            padding: 15px;
+            border-radius: 10px;
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+            flex: 1;
+            text-align: center;
+            transition: transform 0.3s ease, box-shadow 0.3s ease;
+        }
+
+        .summary .block:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 8px 15px rgba(0, 0, 0, 0.3);
+        }
+
+        .summary .block h3 {
+            margin: 0;
+            color: #000000;
+        }
+
+        .summary .block p {
+            margin: 5px 0 0;
+            font-size: 1.2rem;
+            color: #e1a730;
+            font-weight: bold;
+        }
+
+        .navigation {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            gap: 15px;
+            margin: 20px 0;
+        }
+
+        .navigation button {
+            background: #e1a730;
+            color: #fff;
+            border: none;
+            padding: 10px 20px;
+            border-radius: 5px;
+            font-size: 1rem;
+            cursor: pointer;
+            transition: background 0.3s, transform 0.2s;
+        }
+
+        .navigation button:hover {
+            background: #c29224;
+            transform: scale(1.05);
+        }
+
+        .navigation button:active {
+            background: #a6781c;
+        }
+
+        @media (max-width: 768px) {
+            .summary {
+                flex-direction: column;
+                gap: 15px;
+            }
+
+            .navigation button {
+                width: 100%;
+            }
+        }
+    </style>
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+</head>
+<body>
+    <!-- Header Row -->
+    <div class="header">Home Page</div>
+
+    <div class="container">
+        <h1 class="title">₹50,000</h1>
+
+        <div class="pie-chart">
+            <canvas id="pieChart"></canvas>
+        </div>
+
+        <div class="summary">
+            <div class="block">
+                <h3>Income</h3>
+                <p>₹70,000</p>
+            </div>
+            <div class="block">
+                <h3>Balance</h3>
+                <p>₹50,000</p>
+            </div>
+            <div class="block">
+                <h3>Spent Today</h3>
+                <p>₹3,000</p>
+            </div>
+        </div>
+
+        <div class="navigation">
+            <button onclick="navigateTo('insights.html')">Insights</button>
+            <button onclick="navigateTo('categories.html')">Categories</button>
+            <button onclick="navigateTo('accounts.html')">Accounts</button>
+            <!-- New Add to Transaction Button -->
+            <button onclick="navigateTo('add-transaction.html')">Add to Transaction</button>
+        </div>
+    </div>
+
+    <script>
+        // Function to navigate to different pages
+        function navigateTo(page) {
+            window.location.href = page;
+        }
+
+        // Create a pie chart
+        const ctx = document.getElementById('pieChart').getContext('2d');
+        const pieChart = new Chart(ctx, {
+            type: 'doughnut',
+            data: {
+                labels: ['Income', 'Expenses', 'Savings'],
+                datasets: [
+                    {
+                        data: [70, 20, 10], // Percentages
+                        backgroundColor: ['#e1a730', '#c0392b', '#2ecc71'],
+                        hoverBackgroundColor: ['#d1a020', '#a83226', '#27ae60'],
+                    },
+                ],
+            },
+            options: {
+                responsive: true,
+                maintainAspectRatio: false,
+                plugins: {
+                    legend: {
+                        position: 'bottom',
+                        labels: {
+                            color: '#000000',
+                            font: {
+                                size: 14,
+                            },
+                        },
+                    },
+                    tooltip: {
+                        callbacks: {
+                            label: function (tooltipItem) {
+                                const label = tooltipItem.label || '';
+                                const value = tooltipItem.raw || 0;
+                                return `${label}: ${value}%`;
+                            },
+                        },
+                    },
+                },
+            },
+        });
+    </script>
+</body>
+</html>

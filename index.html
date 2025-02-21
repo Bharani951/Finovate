@@ -1,0 +1,59 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Finovate</title>
+  <!-- Optionally include Font Awesome, or any icons you prefer -->
+  <link 
+    rel="stylesheet"
+    href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css"
+  />
+  <style>
+    body {
+      margin: 0;
+      padding: 0;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      height: 100vh;
+      background-color: #f9f9f9; /* Optional background color */
+    }
+    #loading-page {
+      text-align: center;
+    }
+    #loading-page img {
+      width: 150px;
+      border-radius: 15px; /* Smooth corner radius for the logo */
+    }
+    .title {
+      font-family: Arial, sans-serif;
+      font-size: 24px;
+      margin: 10px 0;
+      color: #333; /* Optional text color */
+    }
+    .fas.fa-coins {
+      font-size: 2rem;
+      margin-top: 20px;
+      color: #ffcc00; /* Optional icon color */
+    }
+  </style>
+</head>
+<body>
+  <!-- Simple loading page -->
+  <div id="loading-page">
+    <img src="logo.png" alt="Finovate Logo"/>
+    <h1 class="title">Finovate</h1>
+    <i class="fas fa-coins fa-spin"></i>
+  </div>
+
+  <!-- Redirect to main.html after 2 seconds -->
+  <script>
+    window.addEventListener("load", () => {
+      setTimeout(() => {
+        window.location.href = "main.html";
+      }, 2000);
+    });
+  </script>
+</body>
+</html>

@@ -1,0 +1,200 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Add Transaction</title>
+    <style>
+        /* Add your styling here */
+        body {
+            font-family: Arial, sans-serif;
+            background-color: #ffffff;
+            color: #000000;
+            margin: 0;
+            padding: 0;
+        }
+
+        .container {
+            max-width: 400px;
+            margin: 20px auto;
+            padding: 20px;
+            background: #ffffff;
+            border-radius: 10px;
+            box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
+        }
+
+        .header {
+            display: flex;
+            align-items: center;
+            font-size: 18px;
+            font-weight: bold;
+            color: #000000;
+            margin-bottom: 20px;
+        }
+
+        .toggle {
+            display: flex;
+            justify-content: center;
+            margin-bottom: 20px;
+        }
+
+        .toggle button {
+            flex: 1;
+            padding: 10px;
+            border: none;
+            border-radius: 5px;
+            background-color: #e1a730;
+            color: #ffffff;
+            font-weight: bold;
+        }
+
+        .form-group {
+            margin-bottom: 15px;
+        }
+
+        .form-group label {
+            display: block;
+            font-size: 14px;
+            margin-bottom: 5px;
+            color: #000000;
+        }
+
+        .form-group input,
+        .form-group select,
+        .form-group textarea {
+            width: 100%;
+            padding: 10px;
+            border: 1px solid #e1a730;
+            border-radius: 5px;
+            font-size: 14px;
+        }
+
+        .form-group textarea {
+            resize: none;
+            height: 60px;
+        }
+
+        .save-btn {
+            display: block;
+            width: 60px;
+            height: 60px;
+            background-color: #e1a730;
+            color: #ffffff;
+            border: none;
+            border-radius: 50%;
+            font-size: 30px;
+            text-align: center;
+            cursor: pointer;
+            margin: 20px auto 0;
+            line-height: 60px;
+            box-shadow: 0 4px 10px rgba(0, 0, 0, 0.2);
+        }
+
+        .save-btn:hover {
+            background-color: #c29224;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <div class="header">Add Transaction</div>
+
+        <div class="form-group">
+            <label>Date</label>
+            <input type="date" id="date" value="2025-01-24">
+        </div>
+
+        <div class="form-group">
+            <label>Time</label>
+            <input type="time" id="time" value="14:33">
+        </div>
+
+        <div class="form-group">
+            <label>Amount</label>
+            <input type="number" id="amount" placeholder="0" min="0">
+        </div>
+
+        <div class="form-group">
+            <label>Category</label>
+            <select id="category">
+                <option>Others</option>
+                <option>Food</option>
+                <option>Shopping</option>
+                <option>Transport</option>
+            </select>
+        </div>
+
+        <div class="form-group">
+            <label>Payment Mode</label>
+            <select id="paymentMode">
+                <option>Cash</option>
+                <option>Card</option>
+                <option>UPI</option>
+                <option>Net Banking</option>
+            </select>
+        </div>
+
+        <div class="form-group">
+            <label>Other Details</label>
+            <textarea id="details" placeholder="Write a note"></textarea>
+        </div>
+
+        <button class="save-btn" id="saveTransaction">&check;</button>
+    </div>
+
+    <!-- Firebase Setup -->
+    <script src="https://www.gstatic.com/firebasejs/9.22.2/firebase-app.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/9.22.2/firebase-firestore.js"></script>
+
+    <script>
+        // Firebase Configuration
+        const firebaseConfig = {
+            apiKey: "AIzaSyAYHNqpDhmP6gV7kJkhd99iIRVg0BBXIQQ",
+  authDomain: "finovate-bd452.firebaseapp.com",
+  projectId: "finovate-bd452",
+  storageBucket: "finovate-bd452.firebasestorage.app",
+  messagingSenderId: "212514953038",
+  appId: "1:212514953038:web:3cbac3bddc25854e55f01f"
+        };
+
+        // Initialize Firebase
+        const app = firebase.initializeApp(firebaseConfig);
+        const db = firebase.firestore(app);
+
+        // Save Transaction to Firestore
+        document.getElementById('saveTransaction').addEventListener('click', async () => {
+            const date = document.getElementById('date').value;
+            const time = document.getElementById('time').value;
+            const amount = document.getElementById('amount').value;
+            const category = document.getElementById('category').value;
+            const paymentMode = document.getElementById('paymentMode').value;
+            const details = document.getElementById('details').value;
+
+            if (!amount || amount <= 0) {
+                alert('Please enter a valid amount.');
+                return;
+            }
+
+            try {
+                await db.collection('transactions').add({
+                    date,
+                    time,
+                    amount: parseFloat(amount),
+                    category,
+                    paymentMode,
+                    details,
+                    createdAt: new Date()
+                });
+
+                alert('Transaction added successfully!');
+                // Clear fields
+                document.getElementById('amount').value = '';
+                document.getElementById('details').value = '';
+            } catch (error) {
+                console.error('Error adding transaction: ', error);
+                alert('Failed to add transaction. Please try again.');
+            }
+        });
+    </script>
+</body>
+</html>

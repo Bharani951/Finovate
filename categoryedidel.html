@@ -1,0 +1,215 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Finovate - Manage Categories</title>
+
+  <!-- Font Awesome -->
+  <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css" rel="stylesheet">
+
+  <!-- SweetAlert2 -->
+  <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+
+  <script type="module">
+    import { initializeApp } from "https://www.gstatic.com/firebasejs/9.22.2/firebase-app.js";
+    import { getFirestore, collection, getDocs, doc, deleteDoc, updateDoc } from "https://www.gstatic.com/firebasejs/9.22.2/firebase-firestore.js";
+  
+    // Firebase Configuration
+    const firebaseConfig = {
+      apiKey: "AIzaSyAYHNqpDhmP6gV7kJkhd99iIRVg0BBXIQQ",
+      authDomain: "finovate-bd452.firebaseapp.com",
+      projectId: "finovate-bd452",
+      storageBucket: "finovate-bd452.firebasestorage.app",
+      messagingSenderId: "212514953038",
+      appId: "1:212514953038:web:3cbac3bddc25854e55f01f"
+    };
+  
+    // Initialize Firebase
+    const app = initializeApp(firebaseConfig);
+    const db = getFirestore(app);
+  
+    // Fetch categories from Firestore
+    async function fetchCategories() {
+      const categoriesSnapshot = await getDocs(collection(db, "categories"));
+      const categoriesList = categoriesSnapshot.docs.map(doc => ({ id: doc.id, ...doc.data() }));
+      return categoriesList;
+    }
+  
+    // Delete category from Firestore
+    async function deleteCategory(categoryId) {
+      try {
+        await deleteDoc(doc(db, "categories", categoryId));
+        Swal.fire("Success", "Category deleted successfully!", "success");
+        loadCategories();  // Reload categories after deletion
+      } catch (error) {
+        console.error("Error deleting category:", error);
+        Swal.fire("Error", "Could not delete category. Try again later.", "error");
+      }
+    }
+  
+    // Edit category in Firestore
+    async function editCategory(categoryId, newCategoryName) {
+      try {
+        const categoryRef = doc(db, "categories", categoryId);
+        await updateDoc(categoryRef, { name: newCategoryName });
+        Swal.fire("Success", "Category updated successfully!", "success");
+        loadCategories();  // Reload categories after update
+      } catch (error) {
+        console.error("Error updating category:", error);
+        Swal.fire("Error", "Could not update category. Try again later.", "error");
+      }
+    }
+  
+    // Load and display categories
+    async function loadCategories() {
+      const categories = await fetchCategories();
+      const tableBody = document.getElementById("categoryTableBody");
+      tableBody.innerHTML = "";  // Clear existing rows
+  
+      categories.forEach(category => {
+        const row = document.createElement("tr");
+  
+        const categoryNameCell = document.createElement("td");
+        categoryNameCell.textContent = category.name;
+  
+        const actionsCell = document.createElement("td");
+        actionsCell.innerHTML = `
+          <button class="edit-btn" onclick="openEditModal('${category.id}', '${category.name}')">Edit</button>
+          <button class="delete-btn" onclick="deleteCategory('${category.id}')">Delete</button>
+        `;
+  
+        row.appendChild(categoryNameCell);
+        row.appendChild(actionsCell);
+        tableBody.appendChild(row);
+      });
+    }
+  
+    // Open Edit Modal with SweetAlert2
+    function openEditModal(categoryId, categoryName) {
+      Swal.fire({
+        title: 'Edit Category',
+        input: 'text',
+        inputValue: categoryName,
+        showCancelButton: true,
+        confirmButtonText: 'Save',
+        cancelButtonText: 'Cancel',
+        preConfirm: (newCategoryName) => {
+          if (newCategoryName && newCategoryName.trim()) {
+            editCategory(categoryId, newCategoryName.trim());
+          } else {
+            Swal.showValidationMessage('Please enter a valid category name');
+          }
+        }
+      });
+    }
+  
+    // Attach functions to the window object
+    window.deleteCategory = deleteCategory;
+    window.editCategory = editCategory;
+    window.openEditModal = openEditModal;
+  
+    // Initialize the page by loading categories
+    window.onload = loadCategories;
+  </script>
+  
+  <style>
+    body {
+      font-family: Arial, sans-serif;
+      background-color: #ffffff;
+      color: #000000;
+      margin: 0;
+      padding: 0;
+    }
+
+    .header {
+      background-color: #e1a730;
+      padding: 1rem;
+      text-align: center;
+      color: #ffffff;
+      font-size: 1.5rem;
+    }
+
+    .container {
+      padding: 2rem;
+      max-width: 800px;
+      margin: 0 auto;
+    }
+
+    table {
+      width: 100%;
+      border-collapse: collapse;
+      margin-top: 1rem;
+    }
+
+    table, th, td {
+      border: 1px solid #e1a730;
+    }
+
+    th, td {
+      padding: 0.8rem;
+      text-align: left;
+    }
+
+    th {
+      background-color: #f5f5f5;
+    }
+
+    button {
+      padding: 0.5rem 1rem;
+      margin: 0.2rem;
+      border: none;
+      cursor: pointer;
+      border-radius: 4px;
+    }
+
+    .edit-btn {
+      background-color: #4CAF50;
+      color: white;
+    }
+
+    .delete-btn {
+      background-color: #f44336;
+      color: white;
+    }
+
+    .edit-btn:hover {
+      background-color: #45a049;
+    }
+
+    .delete-btn:hover {
+      background-color: #e53935;
+    }
+
+    .footer {
+      background-color: #e1a730;
+      text-align: center;
+      color: #ffffff;
+      padding: 0.5rem;
+      margin-top: 2rem;
+    }
+  </style>
+
+</head>
+<body>
+
+  <header class="header">
+    <h1>Finovate - Manage Categories</h1>
+  </header>
+
+  <div class="container">
+    <table>
+      <thead>
+        <tr>
+          <th>Category Name</th>
+          <th>Actions</th>
+        </tr>
+      </thead>
+      <tbody id="categoryTableBody">
+        <!-- Categories will be displayed here -->
+      </tbody>
+    </table>
+  </div>
+
+</body>
+</html>

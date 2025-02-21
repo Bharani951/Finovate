@@ -1,0 +1,91 @@
+/* Center the entire page content */
+body {
+    margin: 0;
+    padding: 0;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    height: 100vh;
+    background-color: #ffffff; /* Theme background color */
+    font-family: Arial, sans-serif; /* Clean, modern font */
+  }
+  
+  /* Smooth corners for the logo */
+  .logo {
+    width: 150px; /* Medium size for the logo */
+    border-radius: 15px; /* Smooth corners */
+    margin-bottom: 20px; 
+    align-self: center;
+    margin-left: 10px;/* Spacing below the logo */
+  }
+  
+  /* Page title styling */
+  .title {
+    font-size: 24px;
+    color: #000000; /* Theme text color */
+    margin-bottom: 20px; /* Space below the title */
+    text-align: center;
+  }
+  
+  /* Login and Signup form styling */
+  form {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    background: #ffffff; /* Theme white background for the form */
+    border-radius: 10px; /* Smooth corners for the form */
+    padding: 30px; /* Internal spacing */
+    box-shadow: 0px 4px 10px rgba(0, 0, 0, 0.1); /* Subtle shadow for depth */
+    width: 100%;
+    max-width: 400px; /* Medium size */
+  }
+  
+  /* Input field styling */
+  input[type="email"],
+  input[type="password"] {
+    width: 100%;
+    padding: 10px;
+    margin-bottom: 15px;
+    font-size: 16px;
+    border: 1px solid #e1a730; /* Theme accent color for border */
+    border-radius: 5px; /* Smooth edges */
+    box-sizing: border-box; /* Ensure padding doesn't overflow */
+  }
+  
+  /* Button styling */
+  button {
+    width: 100%;
+    padding: 10px;
+    font-size: 16px;
+    font-weight: bold;
+    color: #ffffff; /* White text for buttons */
+    background-color: #e1a730; /* Theme primary color */
+    border: none;
+    border-radius: 5px; /* Smooth edges */
+    cursor: pointer;
+    transition: background-color 0.3s;
+    margin-bottom: 15px; /* Add gap between buttons */
+  }
+  
+  button:hover {
+    background-color: #d19029; /* Slightly darker shade on hover */
+  }
+  
+  /* Responsive adjustments for smaller screens */
+  @media (max-width: 600px) {
+    form {
+      max-width: 300px; /* Smaller forms on smaller screens */
+      padding: 20px;
+    }
+  
+    .title {
+      font-size: 20px; /* Adjust title size for smaller screens */
+    }
+  
+    input[type="email"],
+    input[type="password"],
+    button {
+      font-size: 14px; /* Adjust font size for smaller screens */
+    }
+  }
+  

@@ -1,0 +1,196 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Categories - Finovate</title>
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+    <style>
+        body {
+            margin: 0;
+            font-family: Arial, sans-serif;
+            background-color: #ffffff; /* Theme background color */
+            color: #000000; /* Theme text color */
+        }
+
+        .container {
+            width: 100%;
+            max-width: 1200px;
+            margin: 20px auto;
+            padding: 20px;
+            background-color: #ffffff; /* Theme background color */
+            border-radius: 10px;
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+        }
+
+        .title {
+            font-size: 2rem;
+            color: #e1a730; /* Theme accent color */
+            text-align: center;
+            margin-bottom: 20px;
+        }
+
+        .categories {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 20px;
+            margin-bottom: 30px;
+        }
+
+        .category {
+            background: #ffffff; /* Theme background color */
+            padding: 15px;
+            border-radius: 10px;
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+            flex: 1 1 calc(30% - 20px);
+            text-align: center;
+            position: relative;
+        }
+
+        .category h3 {
+            margin: 0;
+            font-size: 1.2rem;
+            color: #000000; /* Theme text color */
+        }
+
+        .category p {
+            font-size: 1rem;
+            color: #888;
+        }
+
+        .category .remove-btn {
+            position: absolute;
+            top: 10px;
+            right: 10px;
+            background: #e74c3c;
+            color: #ffffff; /* White text */
+            border: none;
+            border-radius: 5px;
+            padding: 5px 10px;
+            cursor: pointer;
+        }
+
+        .category .remove-btn:hover {
+            background: #c0392b;
+        }
+
+        .add-category {
+            display: flex;
+            justify-content: center;
+            margin-bottom: 30px;
+        }
+
+        .add-category button {
+            background: #e1a730; /* Theme accent color */
+            color: #ffffff; /* White text */
+            border: none;
+            padding: 10px 20px;
+            border-radius: 5px;
+            font-size: 1rem;
+            cursor: pointer;
+        }
+
+        .add-category button:hover {
+            background: #d19a2c;
+        }
+        .edit-category {
+            display: flex;
+            justify-content: center;
+            margin-bottom: 30px;
+        }
+
+        .edit-category button {
+            background: #e1a730; /* Theme accent color */
+            color: #ffffff; /* White text */
+            border: none;
+            padding: 10px 20px;
+            border-radius: 5px;
+            font-size: 1rem;
+            cursor: pointer;
+        }
+
+        .edit-category button:hover {
+            background: #d19a2c;
+        }
+
+        .pie-chart {
+            max-width: 250px; /* Shrink the size of the pie chart */
+            margin: 0 auto 30px;
+        }
+
+        @media (max-width: 768px) {
+            .category {
+                flex: 1 1 calc(45% - 20px);
+            }
+
+            .pie-chart {
+                max-width: 100%;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h1 class="title">Categories</h1>
+
+        <div class="pie-chart">
+            <canvas id="categoryPieChart"></canvas>
+        </div>
+
+        <div class="categories">
+            <div class="category">
+                <h3>Shopping</h3>
+                <p>₹3,000</p>
+                <button class="remove-btn">Remove</button>
+            </div>
+            <div class="category">
+                <h3>Groceries</h3>
+                <p>₹5,000</p>
+                <button class="remove-btn">Remove</button>
+            </div>
+            <div class="category">
+                <h3>Entertainment</h3>
+                <p>₹2,000</p>
+                <button class="remove-btn">Remove</button>
+            </div>
+        </div>
+
+        <div class="add-category">
+            <button onclick="addCategory()"> Add Category</button>
+        </div>
+
+        <div class="edit-category">
+            <button onclick="editCategory()">Edit Category</button>
+        </div>
+
+        <script>
+            // Initialize Pie Chart
+            const ctx = document.getElementById('categoryPieChart').getContext('2d');
+            const categoryPieChart = new Chart(ctx, {
+                type: 'pie',
+                data: {
+                    labels: ['Shopping', 'Groceries', 'Entertainment', 'Loan', 'EMI'],
+                    datasets: [{
+                        data: [3000, 5000, 2000, 15000, 10000],
+                        backgroundColor: ['#e1a730', '#3498db', '#9b59b6', '#e74c3c', '#f1c40f']
+                    }]
+                },
+                options: {
+                    responsive: true,
+                    plugins: {
+                        legend: {
+                            position: 'top',
+                        }
+                    }
+                }
+            });
+
+            // Add Category Function
+            function addCategory() {
+                window.location.href = "add-category.html"; // Navigate to Code 2 (Add Expense Category page)
+            }
+            function editCategory() {
+                window.location.href = "categoryedidel.html"; // Navigate to Code 2 (Add Expense Category page)
+            }
+        </script>
+    </div>
